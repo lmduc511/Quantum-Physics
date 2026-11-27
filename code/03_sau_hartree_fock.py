@@ -15,8 +15,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pyscf import gto, scf, mp, ci, cc, fci
 
+import json
+
 from common import (C, TEXT, TEXT2, NEUTRAL, E_EXACT_LI, E_HF_LIMIT_LI, CHEM_ACC_HA,
-                    setup_style, save_fig, save_json, Timer)
+                    RES_DIR, setup_style, save_fig, save_json, Timer)
 
 setup_style()
 results = {}
@@ -27,8 +29,26 @@ def li_atom(basis):
     return gto.M(atom="Li 0 0 0", basis=basis, spin=1, verbose=0)
 
 
+CACHE = RES_DIR / "cache_03"
+CACHE.mkdir(exist_ok=True)
+
+
 def run_all(basis):
-    """Chạy HF, MP2, CISD, CCSD, CCSD(T), FCI; trả về năng lượng và thời gian."""
+    """Chạy HF, MP2, CISD, CCSD, CCSD(T), FCI; trả về năng lượng và thời gian.
+    Kết quả được lưu tạm vào results/cache_03/ để chạy lại không phải tính lại từ đầu."""
+    f_json, f_ci = CACHE / f"{basis}.json", CACHE / f"{basis}_civec.npy"
+    if f_json.exists() and f_ci.exists():
+        print(f"  (dùng kết quả đã lưu cho {basis})")
+        out = json.loads(f_json.read_text())
+        rohf = scf.ROHF(li_atom(basis)).run(conv_tol=1e-11)
+        return out, rohf, None, np.load(f_ci)
+    out, rohf, solver, civec = _run_all(basis)
+    f_json.write_text(json.dumps(out))
+    np.save(f_ci, civec)
+    return out, rohf, solver, civec
+
+
+def _run_all(basis):
     mol = li_atom(basis)
     out = {"basis": basis, "nao": mol.nao_nr()}
     with Timer() as t:
@@ -170,7 +190,12 @@ results["fci_wavefunction"] = {"c0": float(c0), "c0_sq": float(c0**2), "top": to
 print("D) cc-pVQZ (không có hàm lõi) và cc-pCVQZ (có hàm lõi), Full CI")
 mol_v = li_atom("cc-pvqz")
 rohf_v = scf.ROHF(mol_v).run(conv_tol=1e-11)
-e_fci_v = fci.FCI(rohf_v).kernel()[0]
+f_v = CACHE / "cc-pvqz_fci.json"
+if f_v.exists():
+    e_fci_v = json.loads(f_v.read_text())["E_FCI"]
+else:
+    e_fci_v = fci.FCI(rohf_v).kernel()[0]
+    f_v.write_text(json.dumps({"E_FCI": e_fci_v}))
 core = {
     "cc-pVQZ": {"E_ROHF": rohf_v.e_tot, "E_FCI": e_fci_v, "E_corr": e_fci_v - rohf_v.e_tot},
     "cc-pCVQZ": {"E_ROHF": runs[4]["ROHF"][0], "E_FCI": runs[4]["FCI"][0],

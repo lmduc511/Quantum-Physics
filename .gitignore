@@ -13,3 +13,4 @@ report/*.fdb_latexmk
 report/*.xdv
 report/*.synctex.gz
 report/chuong/*.aux
+results/cache_03/
