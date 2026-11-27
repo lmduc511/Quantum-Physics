@@ -2,7 +2,7 @@
 
 ## Bài toán nhiều electron trong phương trình Schrödinger
 
-Tài liệu tự học (PDF tiếng Việt, khoảng 60 trang) kèm code Python chạy được. Tài liệu giải thích **vì sao** phương trình Schrödinger cho nhiều electron không giải được bằng công thức, và **các hướng giải quyết** từ cổ điển tới hiện đại. Ví dụ xuyên suốt là nguyên tử liti (Li, 3 electron).
+Tài liệu tự học (PDF tiếng Việt, 81 trang) kèm code Python chạy được. Tài liệu giải thích **vì sao** phương trình Schrödinger cho nhiều electron không giải được bằng công thức, và **các hướng giải quyết** từ cổ điển tới hiện đại. Ví dụ xuyên suốt là nguyên tử liti (Li, 3 electron).
 
 📄 **Báo cáo:** [`report/bao_cao.pdf`](report/bao_cao.pdf)
 
@@ -24,13 +24,16 @@ Mỗi khái niệm được trình bày hai lớp: giải thích kiểu ELI5 (v�
 
 Năng lượng chính xác (phi tương đối tính, Hylleraas): **−7.478 060 Ha**. Code trong kho tính lại:
 
-| Phương pháp | Năng lượng (Ha) | Sai số |
+| Phương pháp | Năng lượng (Ha) | Sai số so với đáp án |
 |---|---|---|
-| Hartree–Fock (giới hạn) | −7.43273 | +45.3 mHa (thiếu toàn bộ tương quan) |
-| Full CI / cc-pCVQZ | −7.47637 | +1.7 mHa |
-| Full CI / ngoại suy CBS | −7.47794 | +0.1 mHa |
-| VMC tự viết (4 tham số) | xem báo cáo | ~92% năng lượng tương quan |
-| DMC tự viết (τ → 0) | xem báo cáo | sai số cỡ 0.1 mHa |
+| Hartree–Fock (giới hạn) | −7.43273 | +45.3 mHa (thiếu toàn bộ năng lượng tương quan) |
+| MP2 / ngoại suy CBS | −7.47401 | +4.05 mHa |
+| CCSD(T) / ngoại suy CBS | −7.47791 | +0.15 mHa |
+| Full CI / cc-pCVQZ (292 824 định thức) | −7.47637 | +1.69 mHa |
+| Full CI / ngoại suy CBS | −7.47794 | +0.12 mHa |
+| DFT: LDA / PBE / B3LYP | −7.34392 / −7.46211 / −7.49291 | +134 / +16 / −15 mHa |
+| VMC tự viết (Slater–Jastrow, 4 tham số) | −7.4744 ± 0.0002 | +3.6 mHa (92% năng lượng tương quan) |
+| DMC tự viết (ngoại suy τ → 0) | −7.47787 ± 0.00007 | +0.19 mHa (99.6% năng lượng tương quan) |
 
 Bảng đầy đủ (kèm DFT) nằm trong chương 8 của báo cáo.
 

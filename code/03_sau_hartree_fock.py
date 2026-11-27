@@ -96,8 +96,10 @@ for X, basis in zip([2, 3, 4], ["cc-pcvdz", "cc-pcvtz", "cc-pcvqz"]):
         e, sec = out[m]
         print(f"    {m:8s} E = {e:.8f} Ha   sai số so với chính xác = "
               f"{1000*(e - E_EXACT_LI):8.3f} mHa   ({sec:6.2f} s)")
+    if X == 3:
+        tz_rohf, tz_civec = rohf, civec
     if X == 4:
-        qz_rohf, qz_solver, qz_civec = rohf, solver, civec
+        qz_civec = civec
 results["runs"] = runs
 
 # Phần trăm năng lượng tương quan thu được (so với FCI cùng tập cơ sở)
@@ -140,8 +142,12 @@ results["E_corr_exact"] = E_CORR_EXACT
 # ===========================================================================
 # PHẦN C. Mổ xẻ hàm sóng Full CI (cc-pCVQZ)
 # ===========================================================================
-print("C) Thành phần hàm sóng Full CI (cc-pCVQZ, orbital ROHF)")
-mol = li_atom("cc-pcvqz")
+# Các hàm phân tích chuỗi định thức của PySCF chỉ hỗ trợ dưới 64 orbital, nên phần
+# "mổ xẻ" chi tiết dùng cc-pCVTZ (43 orbital); trọng số c0^2 thì lấy ở cả TZ và QZ.
+c0_sq_qz = float(qz_civec.ravel()[0] ** 2)
+print(f"C) Hàm sóng Full CI: c0^2 (cc-pCVQZ) = {c0_sq_qz:.5f}; phân tích chi tiết ở cc-pCVTZ")
+mol = li_atom("cc-pcvtz")
+qz_rohf, qz_civec = tz_rohf, tz_civec
 norb = qz_rohf.mo_coeff.shape[1]
 # Đặc trưng mômen động lượng l của từng orbital: s, p, d, f, g
 ao_l = np.array([lab.split()[2][1] for lab in mol.ao_labels()])
@@ -182,7 +188,8 @@ exc_b = np.array([1 - bin(s & 0b1).count("1") for s in strs_b])
 exc = exc_a[:, None] + exc_b[None, :]
 weights = {int(k): float(np.sum(civ[exc == k] ** 2)) for k in range(4)}
 print("  trọng số theo bậc kích thích:", {k: f"{v:.6f}" for k, v in weights.items()})
-results["fci_wavefunction"] = {"c0": float(c0), "c0_sq": float(c0**2), "top": top_rows,
+results["fci_wavefunction"] = {"basis_detail": "cc-pCVTZ", "c0_sq_QZ": c0_sq_qz,
+                               "c0": float(c0), "c0_sq": float(c0**2), "top": top_rows,
                                "weights_by_excitation": weights, "n_det": int(civ.size)}
 
 # ===========================================================================
@@ -220,7 +227,7 @@ for m in ["MP2", "CISD", "CCSD", "CCSD(T)", "FCI"]:
     ax.plot(Xs, y, styles[m], color=cols[m], label=m, markersize=6,
             markeredgecolor="white", markeredgewidth=1)
 ax.axhline(1000 * E_CORR_EXACT, color=TEXT, lw=1.2, ls="--")
-ax.text(2.02, 1000 * E_CORR_EXACT - 1.3, f"chính xác: {1000*E_CORR_EXACT:.2f} mHa",
+ax.text(2.02, 1000 * E_CORR_EXACT + 0.35, f"chính xác: {1000*E_CORR_EXACT:.2f} mHa",
         fontsize=8.5, color=TEXT)
 ax.set_xticks(Xs, ["cc-pCVDZ", "cc-pCVTZ", "cc-pCVQZ"])
 ax.set_ylabel("Năng lượng tương quan (mHa)")
@@ -245,8 +252,8 @@ for yi, v, c in zip(yy, absvals, colors):
 for yi, v, raw in zip(yy, absvals, vals):
     ax.text(v * 1.25, yi, f"{raw:+.2f}", va="center", fontsize=7.5, color=TEXT2)
 ax.axvline(1000 * CHEM_ACC_HA, color=C["green"], lw=1.2, ls="--")
-ax.text(1000 * CHEM_ACC_HA * 1.08, len(labels) - 0.6, "độ chính xác\nhóa học", fontsize=7.5,
-        color=C["green"], va="top")
+ax.text(1000 * CHEM_ACC_HA * 1.08, 0.5, "độ chính xác\nhóa học", fontsize=7.5,
+        color=C["green"], va="center")
 ax.set_xscale("log")
 ax.set_xlim(1e-2, 300)
 ax.set_yticks(yy, labels, fontsize=8)
@@ -275,11 +282,11 @@ for X in Xs:
     ax.plot([runs[X]["nao"]], [runs[X]["n_det_FCI"]], "o", color=C["blue"], markersize=7,
             markeredgecolor="white", markeredgewidth=1.2, zorder=4)
 ax.annotate("các phép Full CI cho Li\nđã chạy trong code này", (runs[4]["nao"], runs[4]["n_det_FCI"]),
-            textcoords="offset points", xytext=(25, -38), fontsize=8.5, color=TEXT,
+            textcoords="data", xytext=(105, 30), va="center", fontsize=8.5, color=TEXT,
             arrowprops=dict(arrowstyle="-", color=TEXT2, lw=0.8))
 ax.axhline(1e12, color=NEUTRAL, lw=1, ls="--")
-ax.text(200, 1e12 * 2.2, "~10$^{12}$ định thức: cỡ giới hạn của siêu máy tính hiện nay",
-        fontsize=8, color=TEXT2, ha="right")
+ax.text(100, 1e12 * 2.2, "~10$^{12}$ định thức: cỡ giới hạn\ncủa siêu máy tính hiện nay",
+        fontsize=8, color=TEXT2, ha="left", va="bottom")
 ax.set_xlabel("Số orbital không gian M (kích thước tập cơ sở)")
 ax.set_ylabel("Số định thức Slater (log)")
 ax.set_title("Full CI: số định thức = C(M, N$_α$) × C(M, N$_β$)", loc="left")

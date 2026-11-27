@@ -181,7 +181,7 @@ ax.set_title("Nguyên tử Li: sai số năng lượng của mọi phương phá
 from matplotlib.lines import Line2D  # noqa: E402
 handles = [Line2D([], [], marker="o", ls="", color=c, label=f, markersize=7)
            for f, c in fam_color.items() if any(t[2] == f for t in entries)]
-ax.legend(handles=handles, fontsize=8, loc="lower right", frameon=True, framealpha=0.95)
+ax.legend(handles=handles, fontsize=8, loc="center right", frameon=True, framealpha=0.95)
 save_fig(fig, "06_tong_ket")
 print("  Bảng xếp hạng (|sai số| tăng dần):")
 for lab, e, fam in entries:
@@ -195,11 +195,11 @@ hh = {row["name"]: row for row in r4["h_atom"]}
 fci_w = r3["fci_wavefunction"]
 macros = {
     # chương 4
-    "czeroSq": f"{fci_w['c0_sq']:.4f}",
+    "czeroSq": f"{fci_w['c0_sq_QZ']:.4f}",
     "PctFciQZ": f"{pct(runs['4']['FCI'][0]):.1f}",
-    "ErrFciQZ": f"{mha(runs['4']['FCI'][0]):.2f}",
+    "ErrFciQZ": f"{mha(runs['4']['FCI'][0]):+.2f}",
     "PctFciCBS": f"{pct(cbs['FCI']['E_tot_CBS']):.1f}",
-    "ErrFciCBS": f"{mha(cbs['FCI']['E_tot_CBS']):.2f}",
+    "ErrFciCBS": f"{mha(cbs['FCI']['E_tot_CBS']):+.2f}",
     "ErrMPtwoCBS": f"{mha(cbs['MP2']['E_tot_CBS']):+.1f}",
     "ErrCCSDTQZ": f"{mha(runs['4']['CCSD(T)'][0]):+.2f}",
     "ErrCCSDTCBS": f"{mha(cbs['CCSD(T)']['E_tot_CBS']):+.2f}",
@@ -221,7 +221,7 @@ macros = {
     "IEdeltaPBE": f"{li['PBE']['IE_delta_eV']:.2f}",
     "IEdeltaBthreeLYP": f"{li['B3LYP']['IE_delta_eV']:.2f}",
     "HerrLDA": f"{hh['LDA (SVWN5)']['err_mHa']:+.1f}",
-    "HerrPBE": f"{hh['PBE']['err_mHa']:+.1f}",
+    "HerrPBE": f"{hh['PBE']['err_mHa']:+.2f}",
     "HerrBthreeLYP": f"{hh['B3LYP']['err_mHa']:+.1f}",
     "HerrHF": f"{hh['Hartree-Fock']['err_mHa']:+.3f}",
     "HhomoLDA": f"{hh['LDA (SVWN5)']['IE_homo_eV']:.1f}",
@@ -233,7 +233,7 @@ macros = {
     "Evmc": f"{v['E']:.4f}",
     "EvmcErr": f"{1000*v['err']:.1f}",
     "PctVmc": f"{pct(v['E']):.0f}",
-    "ErrVmc": f"{mha(v['E']):.1f}",
+    "ErrVmc": f"{mha(v['E']):+.1f}",
     "Edmc": f"{ex['E']:.5f}",
     "EdmcErr": f"{1000*ex['err']:.2f}",
     "ErrDmc": f"{mha(ex['E']):+.2f}",
