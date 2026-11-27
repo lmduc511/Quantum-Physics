@@ -1,0 +1,63 @@
+\chapter*{Lời mở đầu}
+\addcontentsline{toc}{chapter}{Lời mở đầu}
+\markboth{Lời mở đầu}{}
+
+Phương trình Schrödinger được viết ra năm 1926. Chỉ vài tháng sau, nó đã giải trọn vẹn nguyên tử hydro: một electron quay quanh một hạt nhân. Nhưng chỉ cần thêm \emph{một} electron (nguyên tử heli) là không còn công thức nghiệm nào nữa. Với liti (3 electron), cacbon (6 electron) hay một phân tử thuốc (hàng trăm electron), bài toán khó tới mức gần một thế kỷ sau, các nhà khoa học vẫn đang phát minh phương pháp mới để giải nó. Năm 1998, giải Nobel Hóa học được trao cho hai người đã nghĩ ra cách ``lách'' bài toán này: Walter Kohn (lý thuyết phiếm hàm mật độ) và John Pople (các phương pháp tính toán hóa lượng tử).
+
+Tài liệu này kể lại câu chuyện đó cho người mới bắt đầu, với mục tiêu \textbf{hiểu sâu}: không chỉ biết tên các phương pháp, mà hiểu \emph{vì sao} bài toán khó, \emph{mỗi phương pháp xấp xỉ cái gì}, \emph{được gì và mất gì}.
+
+\section*{Bạn cần biết gì trước khi đọc?}
+Không nhiều. Bạn nên biết đạo hàm, tích phân, số phức ở mức cơ bản, và đã từng nghe về phương trình Schrödinger cho một hạt (giếng thế, nguyên tử hydro). Mọi khái niệm khác (spin, định thức Slater, phiếm hàm, Monte Carlo\ldots) đều được giải thích từ đầu. Đại số tuyến tính (ma trận, trị riêng) sẽ giúp ích nhiều ở chương 3 trở đi. Nếu chưa vững, Phụ lục~\ref{pl:lotrinh} có lộ trình học bổ sung.
+
+\section*{Cách đọc tài liệu}
+Mỗi khái niệm được trình bày theo hai lớp:
+\begin{eli5}
+Hộp màu xanh này giải thích ý tưởng bằng lời và ví dụ đời thường, không có công thức. Chỉ đọc các hộp xanh, bạn vẫn nắm được ``cốt truyện'' của cả tài liệu. Cuối mỗi ví dụ thường có một câu nói rõ ví dụ đó \emph{sai ở đâu}, vì mọi phép so sánh đều có giới hạn.
+\end{eli5}
+\begin{congthuc}
+Hộp màu xám chứa công thức thật, kèm giải thích \emph{từng ký hiệu}. Đây là phần giúp bạn tự tính toán và đọc được sách chuyên ngành.
+\end{congthuc}
+\begin{hieulam}
+Hộp màu cam chỉ ra những hiểu lầm mà người mới (và cả người không mới) hay mắc.
+\end{hieulam}
+\begin{chaycode}
+Hộp màu xanh ngọc chỉ ra script Python trong thư mục \code{code/} tạo ra con số hoặc hình vẽ đang nói tới. Bạn có thể chạy lại, sửa tham số và tự quan sát.
+\end{chaycode}
+\begin{ghinho}
+Hộp màu tím ở cuối mỗi chương tóm tắt những điều quan trọng nhất.
+\end{ghinho}
+
+\section*{Một nguyên tử xuyên suốt: liti}
+Thay vì nói chung chung về ``hệ $N$ electron'', tài liệu dùng \textbf{nguyên tử liti} (Li, 3 electron) làm ví dụ xuyên suốt. Li là hệ nhỏ nhất có đủ mọi cái khó của bài toán nhiều electron: có lực đẩy giữa các electron, có nguyên lý Pauli buộc electron thứ ba phải lên lớp vỏ mới, có tương quan electron. Nhưng Li vẫn đủ nhỏ để một máy tính xách tay giải ``gần như chính xác'' bằng nhiều phương pháp, nên ta có thể \emph{so sánh} các phương pháp với một đáp án đã biết tới 15 chữ số:
+\[
+E_{\text{chính xác}}(\text{Li}) = -7.478\,060\,323\,910\Ha .
+\]
+Mọi phương pháp trong tài liệu (Hartree--Fock, CI, Coupled Cluster, DFT, Monte Carlo lượng tử) đều được chạy thật trên Li bằng code đi kèm, và kết quả được so với con số này.
+
+\section*{Bản đồ tài liệu}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{Chương} & \textbf{Câu hỏi chính} \\
+\midrule
+1. Bài toán & Phương trình cho Li trông thế nào? Vì sao không giải được bằng công thức? \\
+2. Hạt đồng nhất & Electron ``không có tên'' nghĩa là gì? Nguyên lý Pauli, định thức Slater, nguyên lý biến phân, năng lượng tương quan. \\
+3. Hartree--Fock & Ý tưởng ``trường trung bình'': mỗi electron chỉ thấy đám mây trung bình của các electron khác. \\
+4. Sau Hartree--Fock & Sửa phần thiếu của Hartree--Fock: CI, MP2, Coupled Cluster. \\
+5. DFT & Bỏ hàm sóng $3N$ chiều, chỉ dùng mật độ electron 3 chiều. \\
+6. Monte Carlo lượng tử & Giải bằng cách ``tung xúc xắc'' thông minh. \\
+7. Biên giới & Mạng nơ-ron, máy tính lượng tử, mạng tensor. \\
+8. Tổng kết & So sánh mọi phương pháp trên cùng một biểu đồ. \\
+Phụ lục & Lộ trình tự học, tài liệu nên đọc, bảng thuật ngữ Việt--Anh, hướng dẫn chạy code. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section*{Quy ước}
+\begin{itemize}
+\item \textbf{Đơn vị nguyên tử} (giải thích ở mục~\ref{sec:dvnt}): năng lượng tính bằng hartree (Ha), độ dài bằng bohr. $1\Ha = 27.211\eV$, $1\bohr = 0.529$\,Å. Ta thường dùng mHa (mili-hartree, $10^{-3}\Ha$).
+\item \textbf{Dấu chấm thập phân} (7.478 chứ không phải 7,478), để khớp với code và với tài liệu quốc tế.
+\item \textbf{Thuật ngữ}: dùng tiếng Việt, kèm thuật ngữ tiếng Anh trong ngoặc ở lần xuất hiện đầu, ví dụ: hàm sóng \en{wavefunction}. Bảng đầy đủ ở Phụ lục~\ref{pl:thuatngu}.
+\item \textbf{Trích dẫn} dạng [số], danh sách ở cuối tài liệu, kèm DOI hoặc đường link.
+\end{itemize}

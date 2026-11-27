@@ -1,0 +1,143 @@
+\chapter{Biên giới: mạng nơ-ron, máy tính lượng tử, mạng tensor}
+\label{ch:biengioi}
+
+Chương này giới thiệu các hướng đang được nghiên cứu sôi động nhất (tính tới cuối năm 2026). Khác các chương trước, ở đây ta không tự chạy code, mà dựa vào kết quả đã công bố. Với các kết quả rất mới, tài liệu ghi rõ khi nào đó chỉ là bản thảo chưa qua bình duyệt \en{preprint}.
+
+\section{Hàm sóng mạng nơ-ron}
+
+\begin{eli5}[một hàm biến hình có hàng triệu núm vặn]
+Mạng nơ-ron là một cỗ máy nhận vào vị trí của mọi electron và trả ra một con số: giá trị hàm sóng. Nó có hàng trăm nghìn tới hàng triệu ``núm vặn'' (tham số), nên có thể ``nặn'' thành gần như mọi hình dạng. Điều thú vị: ta \emph{không cần dữ liệu huấn luyện}. Chính phương trình Schrödinger là ``thầy giáo'': ta vặn núm sao cho năng lượng VMC (chương~\ref{ch:qmc}) thấp nhất. Nguyên lý biến phân đảm bảo năng lượng thấp hơn nghĩa là hàm sóng tốt hơn.
+
+\emph{Chỗ ví dụ ``gãy'':} linh hoạt không có nghĩa là chắc chắn đúng. Huấn luyện tốn hàng trăm tới hàng chục nghìn giờ GPU, có yếu tố ngẫu nhiên, và có thể bị kẹt.
+\end{eli5}
+
+Ý tưởng dùng mạng nơ-ron làm hàm sóng xuất hiện năm 2017 với các mô hình spin \cite{Carleo2017}. Năm 2019--2020, hai nhóm độc lập áp dụng nó cho electron trong không gian thực: FermiNet của DeepMind \cite{Pfau2020} và PauliNet của nhóm Berlin \cite{Hermann2020}.
+
+\begin{congthuc}[ý tưởng của FermiNet]
+Hàm sóng vẫn có dạng định thức (để đảm bảo phản đối xứng), nhưng các ``orbital'' được thay bằng đầu ra của mạng nơ-ron:
+\[
+\Psi(\vr_1,\ldots,\vr_N)=\sum_{k}\omega_k\,\det\big[\phi^{k}_i(\vr_j;\{\vr_{/j}\})\big]_{\uparrow}\,\det\big[\phi^{k}_i(\vr_j;\{\vr_{/j}\})\big]_{\downarrow} .
+\]
+\begin{itemize}
+\item Khác orbital thông thường $\phi_i(\vr_j)$ chỉ phụ thuộc vị trí electron $j$, ``orbital tổng quát'' $\phi_i(\vr_j;\{\vr_{/j}\})$ phụ thuộc vào electron $j$ \emph{và} vào mọi electron khác, nhưng đối xứng theo các electron khác đó. Nhờ vậy đổi chỗ hai electron cùng spin vẫn là đổi hai cột của ma trận, và định thức vẫn đổi dấu: phản đối xứng được đảm bảo chính xác.
+\item Đầu vào của mạng là vị trí electron so với hạt nhân và khoảng cách giữa các electron ($|\vr_i-\vr_j|$). Nhờ có khoảng cách này, mạng ``học'' được cả tương quan lẫn điều kiện cusp.
+\item Mạng được huấn luyện bằng cách cực tiểu hóa năng lượng VMC, với mẫu lấy bằng thuật toán Metropolis đúng như chương~\ref{ch:qmc}.
+\item Chi phí một bước tối ưu tăng khoảng $N^4$ theo số electron, với hệ số rất lớn \cite{Pfau2020}.
+\end{itemize}
+\end{congthuc}
+
+\begin{table}[h]
+\centering\small
+\caption{FermiNet (2020) cho các nguyên tử chu kỳ 2: sai số so với năng lượng chính xác và phần trăm năng lượng tương quan thu được \cite{Pfau2020}. Mọi nguyên tử đều đạt độ chính xác hóa học ($1.6\mHa$).}
+\label{tab:ferminet}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Nguyên tử & FermiNet (Ha) & Chính xác (Ha) & Sai số (mHa) & \% tương quan \\
+\midrule
+Li & $-7.47798(1)$ & $-7.47806$ & $+0.08$ & 99.82 \\
+Be & $-14.66733(3)$ & $-14.66736$ & $+0.03$ & 99.97 \\
+B & $-24.65370(3)$ & $-24.65391$ & $+0.21$ & 99.83 \\
+C & $-37.84471(5)$ & $-37.8450$ & $+0.29$ & 99.81 \\
+N & $-54.58882(6)$ & $-54.5892$ & $+0.38$ & 99.80 \\
+O & $-75.06655(7)$ & $-75.0673$ & $+0.75$ & 99.70 \\
+Ne & $-128.9366(1)$ & $-128.9376$ & $+1.0$ & 99.74 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Các bước tiến 2020--2026.}
+\begin{itemize}
+\item \textbf{PauliNet} \cite{Hermann2020} giữ ``khung vật lý'' Slater--Jastrow (orbital HF làm nền, cusp cài sẵn) và dùng mạng nơ-ron cho phần tương quan, nên cần ít tài nguyên hơn.
+\item \textbf{Psiformer} \cite{vonGlehn2023} dùng cơ chế \emph{self-attention} của kiến trúc Transformer (cùng họ với các mô hình ngôn ngữ lớn). Với benzen, Psiformer cho năng lượng thấp hơn kết quả DMC tốt nhất đã công bố.
+\item \textbf{Forward Laplacian / LapNet} \cite{LiLapNet2024}: tính laplacian (cần cho năng lượng cục bộ) trong một lượt truyền xuôi duy nhất, tăng tốc hơn 10 lần.
+\item \textbf{Trạng thái kích thích} \cite{Pfau2024}: với Li, năng lượng kích thích 2s $\to$ 2p tính được là $0.06790\Ha$, so với thực nghiệm $0.067907\Ha$, sai dưới $0.005\mHa$.
+\item \textbf{Mô hình nền tảng} \cite{Scherbela2024}: huấn luyện trước một mạng trên nhiều phân tử rồi chỉ cần tinh chỉnh cho phân tử mới, giảm mạnh chi phí cho mỗi phân tử.
+\end{itemize}
+
+\paragraph{Hạn chế (nói thẳng).}
+Chi phí GPU rất lớn: hàng nghìn giờ GPU cho phân tử cỡ benzen \cite{vonGlehn2023}. Phần trăm tương quan thu được giảm dần khi hệ lớn lên. Tối ưu hóa mang tính ngẫu nhiên, kết quả dao động giữa các lần chạy, và không có thanh sai số hệ thống chặt chẽ. Với Li, các phương pháp này đã ``bão hòa'' ở mức sai số micro-hartree: Li trở thành bài kiểm tra chuẩn chứ không còn là mục tiêu nghiên cứu.
+
+\section{Máy tính lượng tử}
+
+\begin{eli5}[muốn mô phỏng dàn nhạc, hãy dùng một dàn nhạc]
+Ghi lại mọi sóng âm của một bản giao hưởng lên giấy thì vô cùng tốn, nhưng một dàn nhạc thật ``tự nhiên'' tạo ra nó. Tương tự, trạng thái của $n$ qubit cần $2^n$ số phức để lưu trên máy tính cổ điển, còn máy tính lượng tử ``chứa'' nó trong $n$ qubit. Năm 1982, Feynman đề xuất: hãy dùng một hệ lượng tử điều khiển được để mô phỏng hệ lượng tử khác \cite{Feynman1982}. Đây là cách ``đi xuyên'' bức tường hàm mũ thay vì đi vòng.
+
+\emph{Chỗ ví dụ ``gãy'':} ta không ``đọc'' được cả $2^n$ biên độ; mỗi phép đo chỉ cho một kết quả ngẫu nhiên, nên phải lặp hàng nghìn tới hàng triệu lần. Qubit hiện nay rất ``ồn'', giống một dàn nhạc mà nhạc cụ lạc dây sau vài giây.
+\end{eli5}
+
+\begin{congthuc}[từ electron sang qubit]
+Trong ngôn ngữ lượng tử hóa lần hai, mỗi spin-orbital $j$ hoặc có electron ($n_j=1$) hoặc trống ($n_j=0$), giống một qubit. Phép ánh xạ \textbf{Jordan--Wigner} \cite{JordanWigner1928} viết toán tử ``đặt electron vào orbital $j$'' thành
+\[
+a_j^\dagger=Z_0\otimes Z_1\otimes\cdots\otimes Z_{j-1}\otimes\frac{X_j-iY_j}{2},
+\]
+với $X,Y,Z$ là các ma trận Pauli tác động lên từng qubit. Chuỗi $Z$ phía trước đảm bảo dấu phản đối xứng của fermion. Hamiltonian trở thành tổng của các ``chuỗi Pauli'': $\Hhat=\sum_kc_kP_k$. Số qubit bằng số spin-orbital, tức gấp đôi số hàm cơ sở.
+\end{congthuc}
+
+\begin{table}[h]
+\centering\small
+\caption{Li cần bao nhiêu qubit? (ánh xạ Jordan--Wigner, mỗi spin-orbital một qubit). Số liệu do subagent nghiên cứu tự tính bằng PySCF và OpenFermion; cột cuối là sai số của nghiệm \emph{chính xác} trong tập cơ sở đó, tức kết quả tốt nhất mà một máy tính lượng tử hoàn hảo có thể cho.}
+\label{tab:qubit}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Tập cơ sở & Số qubit & Số chuỗi Pauli & Sai số của Full CI (mHa) \\
+\midrule
+STO-3G & 10 & 156 & $+162$ \\
+6-31G & 18 & 3\,388 & $+46.5$ \\
+cc-pCVDZ & 36 & --- & $+12.0$ \\
+cc-pCVTZ & 86 & --- & $+3.8$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Bảng~\ref{tab:qubit} cho một bài học trung thực: một máy tính lượng tử ``giải đúng'' Li trong tập STO-3G (10 qubit) vẫn sai khoảng 100\,kcal/mol so với thực tế, vì tập cơ sở quá nhỏ. Muốn sai số vài mHa cần khoảng 86 qubit \emph{hoàn hảo}, trong khi máy tính cổ điển giải Full CI của chính bài toán đó trong vài phút (chương~\ref{ch:sauhf}). Li là bài tập sư phạm, không phải ứng viên cho ``lợi thế lượng tử''.
+
+\subsection{VQE: đầu bếp lượng tử và người nếm cổ điển}
+
+\begin{eli5}[đầu bếp và người nếm]
+Máy lượng tử làm ``đầu bếp'': nấu một trạng thái thử theo công thức có vài núm vặn. Máy cổ điển làm ``người nếm'': đo năng lượng rồi bảo đầu bếp vặn núm. Lặp lại tới khi món ăn (năng lượng) ngon nhất. Đây chính là nguyên lý biến phân, chỉ khác là hàm thử được ``nấu'' trên phần cứng lượng tử.
+
+\emph{Chỗ ví dụ ``gãy'':} mỗi lần nếm phải đo hàng triệu lần vì kết quả lượng tử là ngẫu nhiên; mặt năng lượng có thể phẳng lì (``barren plateau'') khiến không biết vặn núm theo hướng nào \cite{McClean2018}; và nhiễu phần cứng làm món ăn sai vị.
+\end{eli5}
+
+\textbf{VQE} \en{Variational Quantum Eigensolver} được đề xuất năm 2014 \cite{Peruzzo2014}: $E(\boldsymbol\theta)=\langle\psi(\boldsymbol\theta)|\Hhat|\psi(\boldsymbol\theta)\rangle\ge E_0$. Các mốc thực nghiệm: HeH$^+$ trên chip quang tử 2 qubit (2014) \cite{Peruzzo2014}; H$_2$, LiH, BeH$_2$ trên 2--6 qubit của IBM (2017) \cite{Kandala2017}; Hartree--Fock cho chuỗi H$_{12}$ trên bộ xử lý Sycamore của Google (2020) \cite{Google2020}. Lưu ý: Hartree--Fock là bài toán \emph{dễ} với máy cổ điển; thí nghiệm năm 2020 là để kiểm định phần cứng.
+
+\subsection{Ước lượng pha lượng tử và máy tính chịu lỗi}
+Về lâu dài, thuật toán \textbf{ước lượng pha lượng tử} (QPE) có thể cho năng lượng chính xác trong tập cơ sở, nhưng cần mạch rất sâu, tức là cần máy tính lượng tử \emph{chịu lỗi} \en{fault-tolerant} với hàng nghìn qubit logic được sửa lỗi. Bài toán ``biểu tượng'' là cụm FeMoco của enzyme nitrogenase (cố định nitơ trong tự nhiên). Ước tính năm 2021 cần khoảng 4 triệu qubit vật lý chạy dưới 4 ngày \cite{LeeTHC2021}. Phần cứng đang tiến bộ thật: năm 2025, Google chứng minh bộ nhớ lượng tử sửa lỗi hoạt động dưới ngưỡng \cite{Willow2025}; năm 2026, Quantinuum chạy trọn QPE trên qubit đã mã hóa sửa lỗi cho phân tử H$_2$, nhưng sai số thống kê ($13\mHa$) vẫn lớn hơn độ chính xác hóa học \cite{Yamamoto2026}.
+
+\subsection{Đánh giá thẳng thắn}
+Một nhóm tác giả gồm cả chuyên gia máy tính lượng tử lẫn hóa lượng tử cổ điển đã xem xét kỹ giả thuyết ``máy tính lượng tử sẽ nhanh hơn theo hàm mũ'' cho bài toán năng lượng trạng thái cơ bản, và kết luận \cite{Lee2023}: \emph{``evidence for such an exponential advantage across chemical space has yet to be found''} (bằng chứng cho lợi thế theo hàm mũ trên toàn bộ không gian hóa học vẫn chưa được tìm thấy). Lý do: chính những tính chất làm cho trạng thái dễ chuẩn bị trên máy lượng tử cũng làm cho các phương pháp cổ điển (DMRG, Coupled Cluster) hoạt động tốt. Tăng tốc theo đa thức vẫn có thể có. Một bản thảo năm 2026 (chưa bình duyệt) còn cho thấy mô hình FeMoco 76 orbital, vốn dùng trong phần lớn các ước tính tài nguyên lượng tử, có thể được giải tới gần độ chính xác hóa học bằng máy tính cổ điển \cite{Zhai2026}. Tóm lại, tính tới cuối 2026: \textbf{chưa có tính toán lượng tử nào cho năng lượng trạng thái cơ bản có ý nghĩa hóa học vượt khả năng của máy tính cổ điển}. Triển vọng dài hạn nằm ở máy chịu lỗi, hệ tương quan mạnh lớn và bài toán động lực học, và vẫn còn tranh luận.
+
+\section{Mạng tensor và DMRG}
+
+\begin{eli5}[nén ảnh và hàng người nắm tay]
+Một bức ảnh khổng lồ có thể nén vì phần lớn thông tin nằm trong vài ``mẫu'' chính. DMRG nén hàm sóng theo cách tương tự: xếp các orbital thành một hàng, mỗi orbital chỉ ``nắm tay'' (trao đổi thông tin) với hàng xóm qua một sợi dây có ``băng thông'' giới hạn $M$. Nếu tương quan chủ yếu xảy ra giữa các orbital gần nhau trong hàng, vài nghìn kênh là đủ thay cho con số thiên văn.
+
+\emph{Chỗ ví dụ ``gãy'':} nếu hệ có tương quan tầm xa hoặc có cấu trúc 2, 3 chiều, ``băng thông'' cần tăng theo hàm mũ.
+\end{eli5}
+
+\begin{congthuc}[trạng thái tích ma trận]
+DMRG \cite{White1992} biểu diễn hàm sóng dưới dạng \textbf{trạng thái tích ma trận} \en{matrix product state, MPS}:
+\[
+|\Psi\rangle=\sum_{n_1,\ldots,n_k}A^{[1]n_1}A^{[2]n_2}\cdots A^{[k]n_k}\,|n_1n_2\cdots n_k\rangle ,
+\]
+trong đó $n_i\in\{0,\uparrow,\downarrow,\uparrow\!\downarrow\}$ là trạng thái chiếm của orbital $i$, và mỗi $A^{[i]n_i}$ là ma trận $M\times M$. Số tham số khoảng $4kM^2$ thay vì $4^k$. Với các hệ một chiều có khe năng lượng, ``luật diện tích'' của độ vướng víu đảm bảo $M$ hữu hạn là đủ \cite{ChanSharma2011}.
+\end{congthuc}
+
+DMRG mạnh nhất ở nơi các phương pháp khác yếu: \textbf{tương quan tĩnh mạnh} với hàng chục tới hơn 100 orbital hoạt động, như cụm Mn$_4$CaO$_5$ trong quang hợp \cite{Kurashige2013} hay phân tử Cr$_2$ nổi tiếng khó \cite{Larsson2022}. Ngược lại, DMRG \emph{không cần thiết} cho Li: tương quan của Li là tương quan \emph{động} của cặp lõi 1s$^2$, trải trên rất nhiều orbital ảo ít chiếm, đúng loại mà DMRG xử lý kém hiệu quả.
+
+\section{``Full CI mà không cần liệt kê hết''}
+Hai họ phương pháp khác tấn công trực tiếp bức tường tổ hợp của Full CI:
+\begin{itemize}
+\item \textbf{FCIQMC} \cite{Booth2009}: một ``đàn kiến'' walker mang dấu $+$ hoặc $-$ đi lại giữa các định thức Slater, sinh con, chết, và triệt tiêu khi gặp walker trái dấu. Khi đủ đông, phân bố walker cho đúng hàm sóng Full CI mà không cần biết trước mặt nút. Bài toán dấu vẫn còn, nhưng ở dạng nhẹ hơn: cần vượt qua một ``số walker tới hạn''.
+\item \textbf{Selected CI} (CIPSI, HCI, SHCI) \cite{Holmes2016}: trong hàng tỉ tỉ định thức, chỉ vài triệu thực sự quan trọng. Ta ``tuyển chọn'' dần những định thức tương tác mạnh nhất với hàm sóng hiện tại, rồi bổ sung phần còn lại bằng lý thuyết nhiễu loạn. HCI đã đạt độ chính xác Full CI (sai số dưới $1\mHa$) cho phân tử Cr$_2$ trong một không gian $2\times10^{22}$ định thức.
+\end{itemize}
+Một thử nghiệm ``mù'' năm 2020 \cite{Eriksen2020} cho nhiều nhóm dùng các phương pháp gần chính xác khác nhau (DMRG, FCIQMC, SHCI, Coupled Cluster bậc cao\ldots) cùng tính năng lượng Full CI của benzen trong một tập cơ sở nhỏ. Các kết quả lệch nhau khoảng $1\mHa$. Ngay cả ``gần chính xác'' vẫn khó ở 30 electron.
+
+\begin{ghinho}
+\begin{itemize}
+\item Hàm sóng mạng nơ-ron (FermiNet, PauliNet, Psiformer) là VMC với hàm thử cực kỳ linh hoạt. Kết quả rất chính xác (Li sai $0.08\mHa$ năm 2020, micro-hartree năm 2024), nhưng tốn nhiều GPU.
+\item Máy tính lượng tử ``đi xuyên'' bức tường hàm mũ về nguyên tắc. Thực tế tới 2026: phần cứng tiến bộ nhanh, nhưng chưa có lợi thế cho năng lượng trạng thái cơ bản có ý nghĩa hóa học; lợi thế theo hàm mũ vẫn chưa có bằng chứng.
+\item DMRG nén hàm sóng thành tích các ma trận; mạnh cho tương quan tĩnh và hệ dạng chuỗi, không cần cho Li.
+\item FCIQMC và selected CI mở rộng Full CI tới những không gian khổng lồ bằng cách chỉ ghé thăm các định thức quan trọng.
+\end{itemize}
+\end{ghinho}

@@ -1,0 +1,20 @@
+\begin{table}[h]
+\centering\small
+\caption{Kết quả Monte Carlo lượng tử tự viết cho Li (script \code{05\_monte\_carlo\_luong\_tu.py}). Sai số thống kê ($1\sigma$) ghi sau dấu $\pm$.}
+\label{tab:qmc}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Phương pháp & $E$ (Ha) & $E-E_{\text{chính xác}}$ (mHa) & \% tương quan \\
+\midrule
+VMC, chỉ định thức Slater & $-7.4182\pm0.0017$ & $+59.9$ & -32\% \\
+VMC, Slater--Jastrow tối ưu & $-7.47444\pm0.00021$ & $+3.63$ & 92.0\% \\
+DMC, $\tau=0.04$ & $-7.47918\pm0.00010$ & $-1.12$ & 102.5\% \\
+DMC, $\tau=0.02$ & $-7.47834\pm0.00009$ & $-0.28$ & 100.6\% \\
+DMC, $\tau=0.01$ & $-7.47804\pm0.00009$ & $+0.02$ & 100.0\% \\
+DMC, $\tau=0.005$ & $-7.47818\pm0.00008$ & $-0.12$ & 100.3\% \\
+DMC, ngoại suy $\tau\to0$ & $-7.47787\pm0.00007$ & $+0.19$ & 99.6\% \\
+\midrule
+Chính xác & $-7.47806$ & 0 & 100\% \\
+\bottomrule
+\end{tabular}
+\end{table}

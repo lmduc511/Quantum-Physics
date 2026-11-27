@@ -1,0 +1,83 @@
+\chapter{Lộ trình tự học}
+\label{pl:lotrinh}
+
+Phụ lục này dành cho bạn nếu muốn đi từ ``đọc hiểu tài liệu này'' tới ``tự tính toán và đọc được bài báo chuyên ngành''. Lộ trình gồm 9 giai đoạn, giả định bạn học khoảng 10--12 giờ mỗi tuần. Toàn bộ giai đoạn 1--8 mất khoảng \textbf{20--36 tháng}, tương đương 2--3 năm đại học cộng một năm cao học. Học chậm hơn dự kiến là hoàn toàn bình thường. Mã [B\ldots] chỉ tới tài liệu ở Phụ lục~\ref{pl:tailieu}.
+
+\section*{Nguyên tắc}
+\begin{itemize}
+\item \textbf{Học bằng cách tính toán.} Giai đoạn nào cũng có bài tập lập trình. Dùng nguyên tử Li làm ``dự án xuyên suốt'': mỗi giai đoạn, bạn tiến gần thêm một bước tới con số $-7.478\Ha$.
+\item \textbf{Ưu tiên tài liệu miễn phí và dễ đọc}, sau đó tới sách chuẩn (mượn thư viện), cuối cùng là tài liệu chuyên sâu chỉ để tra cứu.
+\item \textbf{Tiếng Anh} là ngôn ngữ của hầu hết tài liệu tốt. Dùng bảng thuật ngữ (Phụ lục~\ref{pl:thuatngu}), ghi chép bằng tiếng Việt, bật phụ đề khi xem video.
+\item \textbf{Kỹ thuật học}: tự giảng lại bằng lời của mình (kỹ thuật Feynman), tự kiểm tra mà không nhìn sách, làm bài tập trước khi xem lời giải.
+\item \textbf{Ba lối đi}: \emph{Lối A}, người dùng tính toán (chỉ cần chạy PySCF/Psi4 cho nghiên cứu): khoảng 6--9 tháng, đi G1 (rút gọn), G2, G3 (rút gọn), G6, G7. \emph{Lối B}, hiểu sâu lý thuyết: đi đủ G1 tới G8. \emph{Lối C}, phát triển phương pháp mới: Lối B rồi G9 và đọc bài báo gốc.
+\end{itemize}
+
+\section*{Tổng quan các giai đoạn}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}p{3.3cm}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+& Nội dung & Thời gian & Mốc kiểm tra \\
+\midrule
+G1 & Toán: giải tích, đại số tuyến tính, phương trình vi phân, xác suất & 3--6 tháng & Chéo hóa ma trận đối xứng; tách biến; giải thích sai số $\sigma/\sqrt M$ \\
+G2 & Python khoa học (song song suốt lộ trình) & 1--2 tháng & Giải phương trình Schrödinger 1D bằng sai phân hữu hạn \\
+G3 & Cơ học lượng tử một hạt & 4--6 tháng & Giải hydro và Li$^{2+}$; biến phân cho He \\
+G4 & Nguyên tử nhiều electron, spin, hạt đồng nhất & 6--10 tuần & Viết định thức Slater 3$\times$3 cho Li; hiểu $J$, $K$ \\
+G5 & Lượng tử hóa lần thứ hai & 4--6 tuần & Viết $\Hhat$ bằng toán tử sinh/hủy; đếm số định thức \\
+G6 & Hartree--Fock và sau HF & 3--5 tháng & Tự viết RHF, MP2, CCSD; tính Li từ HF tới FCI \\
+G7 & Lý thuyết phiếm hàm mật độ & 2--3 tháng & Năng lượng ion hóa Li bằng LDA/PBE/B3LYP \\
+G8 & Monte Carlo lượng tử & 2--3 tháng & Tự viết VMC cho He; VMC/DMC cho Li \\
+G9 & Biên giới (chọn một nhánh): mạng nơ-ron / máy tính lượng tử / DMRG & 3--6 tháng mỗi nhánh & Chạy FermiNet cho Li; VQE cho H$_2$; DMRG \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Thứ tự phụ thuộc: G1 $\to$ G3 $\to$ G4 $\to$ G5 $\to$ G6, rồi tách thành G7 (DFT) và G8 (QMC, cần thêm xác suất ở G1). G9a (mạng nơ-ron) cần G8 và học máy cơ bản; G9b (máy tính lượng tử) cần G5 và G6; G9c (DMRG) cần G5 và phân tích SVD ở G1. G2 (Python) đi song song suốt lộ trình.
+
+\section*{Chi tiết từng giai đoạn}
+
+\paragraph{G1 --- Toán nền tảng (3--6 tháng).}
+\emph{Nội dung:} giải tích một và nhiều biến (tích phân bội, tọa độ cầu, tích phân Gauss $\int e^{-ax^2}dx=\sqrt{\pi/a}$); số phức; \textbf{đại số tuyến tính} (quan trọng nhất: trị riêng, ma trận Hermite, bài toán trị riêng tổng quát $\mathbf{Hc}=\varepsilon\mathbf{Sc}$, phân tích SVD); phương trình vi phân và bài toán trị riêng; xác suất (kỳ vọng, phương sai, định lý giới hạn trung tâm). \emph{Tài liệu:} 3Blue1Brown [B33] trước tiên, rồi MIT 18.06 [B28], MIT 18.01SC/18.02SC/18.03 [B29,B31,B32], Harvard Stat 110 [B36]. \emph{Sẵn sàng khi:} bạn chéo hóa được ma trận đối xứng 3$\times$3 bằng tay và bằng máy, và giải thích được vì sao trung bình của $M$ mẫu ngẫu nhiên có sai số cỡ $\sigma/\sqrt M$.
+
+\paragraph{G2 --- Python khoa học (song song).}
+Python, NumPy (đặc biệt \code{einsum}, rất quan trọng khi làm việc với tích phân hai electron), SciPy, Matplotlib, Jupyter, git. \emph{Tài liệu:} Scientific Python Lectures [B52], NumPy cho người mới [B53]. \emph{Bài tập:} giải phương trình Schrödinger cho hạt trong hộp và dao động tử điều hòa bằng sai phân hữu hạn, so với nghiệm giải tích.
+
+\paragraph{G3 --- Cơ học lượng tử một hạt (4--6 tháng).}
+Hàm sóng, toán tử, phương trình Schrödinger 1D và 3D, mômen động lượng, nguyên tử hydro, nguyên lý biến phân, lý thuyết nhiễu loạn. \emph{Tài liệu:} MIT 8.04/8.05 [B21,B23] hoặc ghi chú miễn phí của David Tong [B19]; sách Griffiths [B1] chương 1--4, 7--8; Feynman tập III [B20] để có trực giác. \emph{Sẵn sàng khi:} bạn tự suy ra $E_n=-Z^2/(2n^2)$ và làm lại phép tính biến phân cho He ở chương~\ref{ch:hatdongnhat} mà không nhìn sách.
+
+\paragraph{G4 --- Nhiều electron, spin, hạt đồng nhất (6--10 tuần).}
+Spin, hạt đồng nhất, phản đối xứng, định thức Slater, quy tắc Slater--Condon, tích phân $J$ và $K$, cấu hình electron và ký hiệu số hạng. \emph{Tài liệu:} Griffiths chương 5 [B1]; MIT 5.61 bài 22--23 [B25]; video TMP Chem chương 9 [B37]. \emph{Sẵn sàng khi:} bạn tự suy ra công thức $E(\zeta)$ của Li ở mục~\ref{sec:bienphan}.
+
+\paragraph{G5 --- Lượng tử hóa lần thứ hai (4--6 tuần).}
+Ngôn ngữ ``orbital nào đang bị chiếm'' thay vì ``electron nào ở đâu''; toán tử sinh, hủy và hệ thức phản giao hoán; Hamiltonian viết bằng các toán tử đó. Đây là ngôn ngữ của Coupled Cluster và của máy tính lượng tử. \emph{Tài liệu:} Szabo \& Ostlund §2.4 [B2]; bài giảng của Saue [B47] và Fromager [B48].
+
+\paragraph{G6 --- Hartree--Fock và sau HF (3--5 tháng).}
+Đây là giai đoạn trung tâm. \emph{Tài liệu:} Szabo \& Ostlund chương 3--6 [B2] là ``kinh thánh''; ghi chú của Sherrill [B42]. Quan trọng nhất là \textbf{tự lập trình}: làm lần lượt các bài trong Crawford Programming Projects [B56] (HF, MP2, CCSD, (T), DIIS) và đối chiếu với Psi4NumPy [B57]. \emph{Sẵn sàng khi:} code HF của bạn cho Li khớp PySCF tới $10^{-8}\Ha$ (như hàm \code{my\_uhf} của chương~\ref{ch:hf}), và bạn giải thích được vì sao CISD không nhất quán kích thước.
+
+\paragraph{G7 --- DFT (2--3 tháng).}
+\emph{Tài liệu:} \emph{The ABC of DFT} của Burke [B43] (miễn phí, viết cho sinh viên), ``DFT in a nutshell'' [B44], sách Sholl \& Steckel [B5], bài giảng MIT 3.320 [B27]. \emph{Bài tập:} lặp lại bảng~\ref{tab:dft} của chương~\ref{ch:dft} với các phiếm hàm khác; tìm hiểu vì sao $-\varepsilon_{\rm HOMO}$ của LDA sai nhiều như vậy.
+
+\paragraph{G8 --- Monte Carlo lượng tử (2--3 tháng).}
+\emph{Tài liệu:} bài nhập môn của Toulouse, Assaraf và Umrigar [B45] (rất sư phạm), ghi chú của Hjorth-Jensen [B46] (xây mã VMC từng bước). \emph{Bài tập:} tự viết VMC cho He với hàm thử $e^{-\zeta(r_1+r_2)}e^{r_{12}/(2(1+br_{12}))}$; đọc và sửa \code{05\_monte\_carlo\_luong\_tu.py}; thử thêm số hạng vào thừa số Jastrow.
+
+\paragraph{G9 --- Biên giới (chọn một nhánh, 3--6 tháng).}
+\emph{Mạng nơ-ron:} cần thêm học máy cơ bản [B17,B18]; đọc bài tổng quan của Hermann và cộng sự [B82], rồi chạy mã FermiNet [B64] cho Li (cần GPU). \emph{Máy tính lượng tử:} khóa IBM Quantum Learning [B40], các demo PennyLane [B50], bài tổng quan của McArdle và cộng sự [B84]; chạy VQE cho H$_2$. \emph{DMRG:} tổng quan của Schollwöck [B92], tensornetwork.org [B68], thư viện block2 [B66].
+
+\section*{Dự án xuyên suốt: nguyên tử Li qua mọi phương pháp}
+Một cách học rất hiệu quả là tự tái tạo bảng tổng kết ở chương~\ref{ch:tongket}, từng dòng một, bằng code của chính bạn:
+\begin{enumerate}
+\item G3: năng lượng chính xác của Li$^{2+}$ ($-4.5\Ha$) và phép biến phân một tham số cho Li ($-7.289\Ha$).
+\item G6: Hartree--Fock tự viết ($-7.4327\Ha$), rồi MP2, CCSD và FCI bằng PySCF, ngoại suy CBS.
+\item G7: Li với LDA, PBE, B3LYP; năng lượng ion hóa.
+\item G8: VMC và DMC tự viết, đạt sai số dưới $1\mHa$.
+\item G9: FermiNet hoặc VQE cho Li trong một tập cơ sở nhỏ.
+\end{enumerate}
+
+\begin{hieulam}[những bẫy hay gặp khi tự học]
+\begin{itemize}
+\item Đọc Helgaker--Jørgensen--Olsen [B4] quá sớm: sách tuyệt vời nhưng là sách tra cứu, không phải sách nhập môn.
+\item Chỉ đọc mà không lập trình: các phương pháp trong tài liệu này chỉ thực sự ``vào đầu'' khi bạn tự cài đặt và gỡ lỗi.
+\item Bỏ qua đại số tuyến tính: gần như mọi thứ từ chương 3 trở đi là bài toán ma trận.
+\item Đóng băng lõi khi tính tương quan cho Li, hoặc dùng cc-pVXZ thay vì cc-pCVXZ (chương~\ref{ch:sauhf}).
+\end{itemize}
+\end{hieulam}
