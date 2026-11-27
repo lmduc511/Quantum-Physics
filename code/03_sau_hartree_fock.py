@@ -75,7 +75,8 @@ def _run_all(basis):
     out["FCI"] = (e_fci, t.seconds)
     norb = rohf.mo_coeff.shape[1]
     out["n_det_FCI"] = comb(norb, 2) * comb(norb, 1)
-    out["S2_FCI"] = float(solver.spin_square(civec, norb, mol.nelec)[0])
+    # Hàm spin_square của PySCF chỉ hỗ trợ dưới 64 orbital
+    out["S2_FCI"] = float(solver.spin_square(civec, norb, mol.nelec)[0]) if norb < 64 else None
     return out, rohf, solver, civec
 
 
@@ -90,7 +91,7 @@ for X, basis in zip([2, 3, 4], ["cc-pcvdz", "cc-pcvtz", "cc-pcvqz"]):
     out, rohf, solver, civec = run_all(basis)
     runs[X] = out
     print(f"  {basis}  ({out['nao']} orbital, FCI có {out['n_det_FCI']:,} định thức, "
-          f"<S^2>_FCI = {out['S2_FCI']:.4f})")
+          f"<S^2>_FCI = {out['S2_FCI'] if out['S2_FCI'] is None else round(out['S2_FCI'], 4)})")
     for m in ["ROHF"] + METHODS:
         e, sec = out[m]
         print(f"    {m:8s} E = {e:.8f} Ha   sai số so với chính xác = "
