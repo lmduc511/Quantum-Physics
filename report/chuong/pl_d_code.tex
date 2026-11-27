@@ -1,0 +1,58 @@
+\chapter{Hướng dẫn chạy code}
+\label{pl:code}
+
+Mọi con số và hình vẽ tính toán trong tài liệu đều được tạo bởi các script trong thư mục \code{code/} của kho. Bạn có thể chạy lại toàn bộ trên một máy tính xách tay thông thường.
+
+\section*{Cài đặt}
+Cần Python 3.10 trở lên. Trong thư mục gốc của kho:
+\begin{verbatim}
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r code/requirements.txt
+\end{verbatim}
+Các thư viện: \code{numpy}, \code{scipy}, \code{matplotlib} và \code{pyscf} (đã thử với PySCF 2.15.1). PySCF chạy tốt trên Linux và macOS. Trên Windows nên dùng WSL (Windows Subsystem for Linux).
+
+\section*{Các script}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}Xr@{}}
+\toprule
+Script & Nội dung & Thời gian \\
+\midrule
+\code{common.py} & Hằng số, giá trị tham chiếu, kiểu vẽ dùng chung & --- \\
+\code{01\_nen\_tang.py} & Bức tường hàm mũ; biến phân cho He; bậc thang năng lượng Li (chương 1--2) & vài giây \\
+\code{02\_hartree\_fock.py} & Vòng lặp SCF tự viết; hội tụ theo tập cơ sở; ROHF/UHF; Koopmans; mật độ xuyên tâm (chương 3) & $\sim$1 phút \\
+\code{03\_sau\_hartree\_fock.py} & MP2, CISD, CCSD, CCSD(T), Full CI; ngoại suy CBS; hàm lõi; số định thức (chương 4) & 30--60 phút \\
+\code{04\_dft.py} & LDA, PBE, BLYP, r$^2$SCAN, B3LYP, PBE0 cho Li, Li$^+$ và H; sai lệch mật độ (chương 5) & vài phút \\
+\code{05\_monte\_carlo\_luong\_tu.py} & VMC và DMC tự viết bằng numpy (chương 6) & 15--40 phút \\
+\code{06\_tong\_hop.py} & Hình tổng kết và các bảng LaTeX của báo cáo (chương 8) & vài giây \\
+\bottomrule
+\end{tabularx}
+\end{center}
+Chạy theo thứ tự từ thư mục \code{code/}:
+\begin{verbatim}
+cd code
+python 01_nen_tang.py
+python 02_hartree_fock.py
+python 03_sau_hartree_fock.py     # chậm nhất: Full CI ~300 000 định thức (cc-pCVQZ)
+python 04_dft.py
+python 05_monte_carlo_luong_tu.py
+python 06_tong_hop.py
+\end{verbatim}
+Kết quả số lưu ở \code{results/*.json}, hình ở \code{figures/*.pdf} và \code{*.png}. Thời gian trên đo với 4 lõi CPU. Bước lâu nhất là Full CI với tập cc-pCVQZ (292\,824 định thức, 84 orbital): mỗi vòng lặp Davidson phải nhân ma trận cỡ $10^{12}$ phép tính. Kết quả Monte Carlo dùng hạt giống ngẫu nhiên cố định, nhưng có thể khác chút ít giữa các máy (trong phạm vi sai số thống kê).
+
+\section*{Biên dịch báo cáo}
+Cần TeX Live có XeLaTeX (gói \code{texlive-xetex}, \code{texlive-lang-other}, \code{texlive-science}) và phông TeX Gyre Pagella, Noto Sans:
+\begin{verbatim}
+cd report
+latexmk -xelatex bao_cao.tex
+\end{verbatim}
+
+\section*{Gợi ý thí nghiệm tự làm}
+\begin{enumerate}
+\item Trong \code{02\_hartree\_fock.py}, đặt \code{damping=0.5} cho hàm \code{my\_uhf}, hoặc đổi cách đoán ban đầu. Số vòng lặp SCF thay đổi thế nào?
+\item Chạy \code{03\_sau\_hartree\_fock.py} cho Be (\code{atom="Be 0 0 0"}, \code{spin=0}). Trọng số $c_0^2$ của định thức HF trong Full CI có còn gần 1 như Li không? Vì sao? (Gợi ý: tương quan tĩnh, mục~\ref{sec:tuongquan}.)
+\item Trong \code{04\_dft.py}, thêm phiếm hàm \code{"wb97x"} hoặc \code{"tpss"}. Phiếm hàm nào cho $-\varepsilon_{\rm HOMO}$ gần năng lượng ion hóa nhất?
+\item Trong \code{05\_monte\_carlo\_luong\_tu.py}, tắt thừa số Jastrow electron--hạt nhân (đặt $A=0$) rồi chạy DMC. Chuyện gì xảy ra với quần thể walker? (Gợi ý: điều kiện cusp, mục~\ref{sec:cusp}.)
+\item Viết VMC cho He bằng cách sửa \code{05\_monte\_carlo\_luong\_tu.py}: chỉ còn 2 electron ngược spin, không cần định thức. So với đáp án $-2.9037\Ha$.
+\end{enumerate}

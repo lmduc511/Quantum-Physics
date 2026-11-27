@@ -1,1 +1,66 @@
 # Quantum-Physics
+
+## Bài toán nhiều electron trong phương trình Schrödinger
+
+Tài liệu tự học (PDF tiếng Việt, khoảng 60 trang) kèm code Python chạy được. Tài liệu giải thích **vì sao** phương trình Schrödinger cho nhiều electron không giải được bằng công thức, và **các hướng giải quyết** từ cổ điển tới hiện đại. Ví dụ xuyên suốt là nguyên tử liti (Li, 3 electron).
+
+📄 **Báo cáo:** [`report/bao_cao.pdf`](report/bao_cao.pdf)
+
+Mỗi khái niệm được trình bày hai lớp: giải thích kiểu ELI5 (ví dụ đời thường, không công thức), rồi công thức thật có giải thích từng ký hiệu.
+
+| Chương | Nội dung |
+|---|---|
+| 1 | Hamiltonian của Li, vì sao không tách biến được, "bức tường hàm mũ" |
+| 2 | Hạt đồng nhất, nguyên lý Pauli, định thức Slater, nguyên lý biến phân, năng lượng tương quan, điều kiện cusp |
+| 3 | Hartree–Fock: trường trung bình, vòng lặp SCF (tự viết), tập cơ sở, ROHF/UHF, Koopmans |
+| 4 | Sau Hartree–Fock: CI, MP2, Coupled Cluster, Full CI, ngoại suy CBS, tương quan tường minh |
+| 5 | Lý thuyết phiếm hàm mật độ (DFT): Hohenberg–Kohn, Kohn–Sham, bậc thang Jacob, lỗi tự tương tác |
+| 6 | Monte Carlo lượng tử: VMC và DMC tự viết bằng numpy, bài toán dấu, nút cố định |
+| 7 | Biên giới: hàm sóng mạng nơ-ron (FermiNet, PauliNet), máy tính lượng tử (VQE), DMRG |
+| 8 | Tổng kết: mọi phương pháp trên cùng một biểu đồ |
+| Phụ lục | Lộ trình tự học, tài liệu nên đọc (có link), bảng thuật ngữ Việt–Anh (90 thuật ngữ), hướng dẫn chạy code |
+
+## Kết quả chính cho nguyên tử Li
+
+Năng lượng chính xác (phi tương đối tính, Hylleraas): **−7.478 060 Ha**. Code trong kho tính lại:
+
+| Phương pháp | Năng lượng (Ha) | Sai số |
+|---|---|---|
+| Hartree–Fock (giới hạn) | −7.43273 | +45.3 mHa (thiếu toàn bộ tương quan) |
+| Full CI / cc-pCVQZ | −7.47637 | +1.7 mHa |
+| Full CI / ngoại suy CBS | −7.47794 | +0.1 mHa |
+| VMC tự viết (4 tham số) | xem báo cáo | ~92% năng lượng tương quan |
+| DMC tự viết (τ → 0) | xem báo cáo | sai số cỡ 0.1 mHa |
+
+Bảng đầy đủ (kèm DFT) nằm trong chương 8 của báo cáo.
+
+## Cấu trúc thư mục
+
+```
+code/      script Python (01 → 06), chạy theo thứ tự
+results/   kết quả số (JSON)
+figures/   hình vẽ (PDF cho LaTeX, PNG để xem nhanh)
+report/    mã nguồn LaTeX và file PDF của báo cáo
+```
+
+## Chạy lại
+
+```bash
+pip install -r code/requirements.txt
+cd code
+python 01_nen_tang.py
+python 02_hartree_fock.py
+python 03_sau_hartree_fock.py
+python 04_dft.py
+python 05_monte_carlo_luong_tu.py
+python 06_tong_hop.py
+```
+
+Biên dịch báo cáo (cần XeLaTeX):
+
+```bash
+cd report
+latexmk -xelatex bao_cao.tex
+```
+
+Chi tiết xem Phụ lục D của báo cáo.

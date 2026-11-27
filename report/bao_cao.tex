@@ -1,0 +1,155 @@
+% =====================================================================
+%  Bài toán nhiều electron trong phương trình Schrödinger
+%  Biên dịch:  cd report && latexmk -xelatex bao_cao.tex
+% =====================================================================
+\documentclass[11pt,a4paper,oneside,openany]{report}
+
+% ---------- Trang, phông chữ, ngôn ngữ ----------
+\usepackage[a4paper,top=2.4cm,bottom=2.6cm,left=2.5cm,right=2.5cm,headheight=14pt]{geometry}
+\usepackage{fontspec}
+\usepackage{amsmath,amssymb}
+\usepackage{unicode-math}
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{Noto Sans}[Scale=MatchLowercase]
+\setmonofont{Noto Sans Mono}[Scale=0.82]
+\setmathfont{TeX Gyre Pagella Math}
+\usepackage[vietnamese]{babel}
+\usepackage{microtype}
+\linespread{1.08}
+
+% ---------- Màu ----------
+\usepackage{xcolor}
+\definecolor{cblue}{HTML}{257DE0}
+\definecolor{corange}{HTML}{F47230}
+\definecolor{caqua}{HTML}{00A888}
+\definecolor{cviolet}{HTML}{6A4CE2}
+\definecolor{cgreen}{HTML}{008A17}
+\definecolor{cred}{HTML}{DC3C3D}
+\definecolor{ctext}{HTML}{191919}
+\definecolor{ctext2}{HTML}{555555}
+\definecolor{bgblue}{HTML}{EAF2FC}
+\definecolor{bggray}{HTML}{F4F4F4}
+\definecolor{bgorange}{HTML}{FEF0E8}
+\definecolor{bgaqua}{HTML}{E3F6F2}
+\definecolor{bgviolet}{HTML}{F0EDFC}
+
+% ---------- Hình, bảng, liên kết ----------
+\usepackage{graphicx}
+\graphicspath{{../figures/}}
+\usepackage{booktabs,tabularx,multirow,array,longtable}
+\usepackage{caption}
+\captionsetup{font=small,labelfont={bf,sf},format=hang,justification=raggedright,singlelinecheck=false}
+\usepackage{float}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt}
+\usepackage{xurl}
+\usepackage[hidelinks=false,colorlinks=true,linkcolor=cblue,citecolor=cviolet,urlcolor=cblue,
+  pdftitle={Bài toán nhiều electron trong phương trình Schrödinger},
+  pdfauthor={Kho Quantum-Physics}]{hyperref}
+
+% ---------- Tiêu đề chương, đầu trang ----------
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\sffamily\bfseries\color{ctext}}
+  {\color{cblue}\Large\MakeUppercase{\chaptertitlename}\ \thechapter}
+  {6pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-10pt}{22pt}
+\titleformat{\section}{\sffamily\bfseries\Large\color{ctext}}{\color{cblue}\thesection}{0.7em}{}
+\titleformat{\subsection}{\sffamily\bfseries\large\color{ctext}}{\color{cblue}\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\sffamily\bfseries\color{ctext}}{}{0em}{}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{ctext2}\nouppercase{\leftmark}}
+\fancyfoot[C]{\small\sffamily\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\sffamily\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% ---------- Các hộp ----------
+\usepackage[most]{tcolorbox}
+\tcbset{
+  hopchung/.style={breakable,enhanced,sharp corners,boxrule=0pt,leftrule=3pt,
+    left=8pt,right=8pt,top=6pt,bottom=6pt,before skip=10pt,after skip=10pt,
+    fonttitle=\sffamily\bfseries\small,coltitle=ctext,attach title to upper,
+    after title={\par\smallskip}}
+}
+\newtcolorbox{eli5}[1][]{hopchung,colback=bgblue,colframe=cblue,
+  title={\color{cblue}Hiểu nhanh (ELI5)\ifx&#1&\else: #1\fi}}
+\newtcolorbox{congthuc}[1][]{hopchung,colback=bggray,colframe=ctext2,
+  title={\color{ctext2}Công thức\ifx&#1&\else: #1\fi}}
+\newtcolorbox{hieulam}[1][]{hopchung,colback=bgorange,colframe=corange,
+  title={\color{corange}Hiểu lầm thường gặp\ifx&#1&\else: #1\fi}}
+\newtcolorbox{chaycode}[1][]{hopchung,colback=bgaqua,colframe=caqua,
+  title={\color{caqua}Chạy thử code\ifx&#1&\else: #1\fi}}
+\newtcolorbox{ghinho}[1][]{hopchung,colback=bgviolet,colframe=cviolet,
+  title={\color{cviolet}Ghi nhớ\ifx&#1&\else: #1\fi}}
+
+% ---------- Ký hiệu tiện dùng ----------
+\newcommand{\Ha}{\,\mathrm{Ha}}
+\newcommand{\mHa}{\,\mathrm{mHa}}
+\newcommand{\eV}{\,\mathrm{eV}}
+\newcommand{\bohr}{\,\mathrm{bohr}}
+\newcommand{\vr}{\mathbf r}
+\newcommand{\vx}{\mathbf x}
+\newcommand{\Hhat}{\hat H}
+\newcommand{\Ecorr}{E_{\mathrm{corr}}}
+\newcommand{\EHF}{E_{\mathrm{HF}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\en}[1]{\textit{(#1)}}   % thuật ngữ tiếng Anh trong ngoặc
+
+% Các con số tự sinh từ kết quả tính toán (code/06_tong_hop.py)
+\input{chuong/so_lieu}
+
+\begin{document}
+
+% =====================================================================
+\begin{titlepage}
+\begin{center}
+\vspace*{2.2cm}
+{\sffamily\color{cblue}\large TÀI LIỆU TỰ HỌC\par}
+\vspace{0.8cm}
+{\sffamily\bfseries\fontsize{26}{32}\selectfont Bài toán nhiều electron\\[4pt] trong phương trình Schrödinger\par}
+\vspace{0.7cm}
+{\Large Từ nguyên tử liti đến các phương pháp giải hiện đại\par}
+\vspace{0.5cm}
+{\large\itshape Giải thích từ con số không, kèm code Python chạy được\par}
+\vspace{1.6cm}
+\includegraphics[width=0.62\textwidth]{02_mat_do_xuyen_tam.pdf}\par
+\vspace{0.3cm}
+{\small\color{ctext2}Mật độ electron của nguyên tử Li tính bằng code đi kèm: hai lớp vỏ 1s và 2s.\par}
+\vfill
+{\sffamily Kho \code{Quantum-Physics}\par}
+\vspace{0.2cm}
+{\sffamily\small Tháng 11/2026\par}
+\vspace{0.2cm}
+{\small\color{ctext2}Soạn với sự hỗ trợ của Claude (Anthropic): tìm tài liệu, viết code, chạy tính toán và viết bài.\\
+Mọi con số trong tài liệu đều có nguồn hoặc được tính lại bằng code trong kho.\par}
+\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\input{chuong/00_mo_dau}
+\input{chuong/01_bai_toan}
+\input{chuong/02_hat_dong_nhat}
+\input{chuong/03_hartree_fock}
+\input{chuong/04_sau_hartree_fock}
+\input{chuong/05_dft}
+\input{chuong/06_monte_carlo}
+\input{chuong/07_bien_gioi}
+\input{chuong/08_tong_ket}
+
+\appendix
+\renewcommand{\chaptertitlename}{Phụ lục}
+\input{chuong/pl_a_lo_trinh}
+\input{chuong/pl_b_tai_lieu}
+\input{chuong/pl_c_thuat_ngu}
+\input{chuong/pl_d_code}
+
+\input{chuong/tai_lieu_trich_dan}
+
+\end{document}

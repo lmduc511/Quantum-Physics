@@ -1,0 +1,96 @@
+\chapter{Tài liệu nên đọc}
+\label{pl:tailieu}
+
+Danh sách chọn lọc dưới đây được kiểm tra trực tiếp trên trang của nhà xuất bản, DOI, arXiv, GitHub hoặc trang khóa học (tháng 11/2026). Ký hiệu: \textbf{[MP]} miễn phí; \textbf{[TP]} trả phí (nên mượn thư viện); mức độ \emph{nhập môn}, \emph{trung cấp}, \emph{nâng cao}. Tài liệu trả phí chỉ dẫn tới trang nhà xuất bản hoặc DOI. Mã số [B\ldots] được giữ nguyên để Phụ lục~\ref{pl:lotrinh} tham chiếu.
+
+\newcommand{\tl}[3]{\item[{[#1]}] #2\newline{\small\color{ctext2}#3}}
+\newenvironment{dstl}{\begin{description}[leftmargin=1.2cm,labelwidth=1.0cm,itemsep=3pt,font=\normalfont\sffamily\small]}{\end{description}}
+
+\section*{Sách giáo khoa}
+\begin{dstl}
+\tl{B1}{D. J. Griffiths, D. F. Schroeter, \emph{Introduction to Quantum Mechanics}, 3rd ed., Cambridge (2018). \url{https://doi.org/10.1017/9781316995433}}{[TP] Nhập môn. Chương 5 (hạt đồng nhất, He) và chương 8 (biến phân) dẫn thẳng tới bài toán Li.}
+\tl{B2}{A. Szabo, N. S. Ostlund, \emph{Modern Quantum Chemistry}, Dover (1996). \url{https://store.doverpublications.com/products/9780486691862}}{[TP, giá thấp] Trung cấp. Sách nhập môn hóa lượng tử quan trọng nhất: HF, CI, nhiễu loạn, hơn 150 bài tập.}
+\tl{B3}{I. N. Levine, \emph{Quantum Chemistry}, 7th ed., Pearson (2014).}{[TP] Nhập môn--trung cấp. Giải thích toán từng bước, rất hợp người học hóa; §10.7--10.8 tính riêng cho Li.}
+\tl{B4}{T. Helgaker, P. Jørgensen, J. Olsen, \emph{Molecular Electronic-Structure Theory}, Wiley (2000). \url{https://doi.org/10.1002/9781119019572}}{[TP] Chuyên sâu. Tài liệu tra cứu toàn diện nhất (908 trang); không dành cho lần đọc đầu.}
+\tl{B5}{D. S. Sholl, J. A. Steckel, \emph{Density Functional Theory: A Practical Introduction}, Wiley (2009; bản 2, 2023). \url{https://doi.org/10.1002/9780470447710}}{[TP] Nhập môn DFT thực hành dễ đọc nhất.}
+\tl{B6}{W. Koch, M. C. Holthausen, \emph{A Chemist's Guide to Density Functional Theory}, Wiley-VCH (2001). \url{https://doi.org/10.1002/3527600043}}{[TP] Trung cấp. DFT từ góc nhìn nhà hóa học.}
+\tl{B9}{F. Becca, S. Sorella, \emph{Quantum Monte Carlo Approaches for Correlated Systems}, Cambridge (2017). \url{https://doi.org/10.1017/9781316417041}}{[TP] Nâng cao. Sách QMC hiện đại.}
+\tl{B10}{J. Thijssen, \emph{Computational Physics}, 2nd ed., Cambridge (2007). \url{https://doi.org/10.1017/CBO9781139171397}}{[TP] Trung cấp. Rất hợp người thích tự lập trình: biến phân, HF, DFT, QMC, có mã mẫu.}
+\tl{B17}{I. Goodfellow, Y. Bengio, A. Courville, \emph{Deep Learning}, MIT Press (2016). \url{https://www.deeplearningbook.org/}}{[MP] Nền tảng học sâu cho nhánh mạng nơ-ron.}
+\tl{B18}{M. Nielsen, \emph{Neural Networks and Deep Learning} (2015). \url{http://neuralnetworksanddeeplearning.com/}}{[MP] Nhập môn mạng nơ-ron dễ hiểu nhất, kèm mã Python.}
+\tl{B19}{D. Tong, \emph{Lecture Notes on Quantum Mechanics}, Cambridge. \url{https://davidtong.org/teaching/quantum-mechanics}}{[MP] Thay thế miễn phí cho Griffiths ở phần một hạt.}
+\tl{B20}{R. P. Feynman và cộng sự, \emph{The Feynman Lectures on Physics, Vol.~III}. \url{https://www.feynmanlectures.caltech.edu/III_toc.html}}{[MP] Trực giác vật lý tuyệt vời về biên độ xác suất và hạt đồng nhất.}
+\end{dstl}
+
+\section*{Khóa học và video miễn phí}
+\begin{dstl}
+\tl{B21}{MIT OCW 8.04 \emph{Quantum Physics I} (Zwiebach, 2016). \url{https://ocw.mit.edu/courses/8-04-quantum-physics-i-spring-2016/}}{[MP] Nhập môn, có video.}
+\tl{B23}{MIT OCW 8.05 \emph{Quantum Physics II} (Zwiebach, 2013). \url{https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/}}{[MP] Trung cấp: hình thức luận, mômen động lượng, spin.}
+\tl{B25}{MIT OCW 5.61 \emph{Physical Chemistry} (Field, 2017). \url{https://ocw.mit.edu/courses/5-61-physical-chemistry-fall-2017/}}{[MP] Cơ học lượng tử cho nhà hóa học; bài 22--23 về He và nguyên tử nhiều electron.}
+\tl{B27}{MIT OCW 3.320 \emph{Atomistic Computer Modeling of Materials} (2005). \url{https://ocw.mit.edu/courses/3-320-atomistic-computer-modeling-of-materials-sma-5107-spring-2005/}}{[MP] Video bài 5--9 về DFT, bài 17--18 về Monte Carlo.}
+\tl{B28}{MIT OCW 18.06 \emph{Linear Algebra} (Strang). \url{https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/}}{[MP] Khóa đại số tuyến tính kinh điển có video.}
+\tl{B33}{3Blue1Brown, \emph{Essence of Linear Algebra}. \url{https://www.3blue1brown.com/topics/linear-algebra}}{[MP] Trực giác hình học cho ma trận và trị riêng; nên xem đầu tiên.}
+\tl{B36}{Harvard \emph{Statistics 110: Probability} (Blitzstein). \url{https://projects.iq.harvard.edu/stat110/home}}{[MP] Xác suất cho người mới, có video và sách miễn phí.}
+\tl{B37}{TMP Chem (T. Parker), YouTube, \emph{Quantum Chemistry and Spectroscopy}. \url{https://www.youtube.com/@TMPChem}}{[MP] 160 video ngắn 5--12 phút; chương 9 rất sát nội dung tài liệu này.}
+\tl{B38}{C. D. Sherrill, YouTube, \emph{Introduction to Computational Chemistry}. \url{https://www.youtube.com/c/DavidSherrill1}}{[MP] Bài giảng đi kèm bộ ghi chú [B42].}
+\tl{B40}{IBM Quantum Learning. \url{https://quantum.cloud.ibm.com/learning/courses}}{[MP] Cơ sở thông tin lượng tử và thiết kế thuật toán biến phân, có thực hành Qiskit.}
+\end{dstl}
+
+\section*{Ghi chú bài giảng và hướng dẫn miễn phí}
+\begin{dstl}
+\tl{B42}{C. D. Sherrill, \emph{Notes on Quantum Chemistry}, Georgia Tech. \url{http://vergil.chemistry.gatech.edu/notes/}}{[MP] Bộ ghi chú ngắn, chính xác về HF, tập cơ sở, CI, CC, DFT.}
+\tl{B43}{K. Burke và cộng sự, \emph{The ABC of DFT} (2007). \url{https://dft.uci.edu/doc/g1.pdf}}{[MP] Nhập môn. Sách DFT viết cho sinh viên mọi ngành.}
+\tl{B44}{K. Burke, L. O. Wagner, ``DFT in a nutshell'', \emph{Int. J. Quantum Chem.} 113, 96 (2013). \url{https://doi.org/10.1002/qua.24259}}{[MP] Tổng quan DFT 6 trang.}
+\tl{B45}{J. Toulouse, R. Assaraf, C. J. Umrigar, ``Introduction to the variational and diffusion Monte Carlo methods'' (2015). \url{https://arxiv.org/abs/1508.02989}}{[MP] Trung cấp. Nhập môn VMC/DMC rất sư phạm.}
+\tl{B46}{M. Hjorth-Jensen, ghi chú FYS4411 (Đại học Oslo). \url{https://github.com/CompPhysics/ComputationalPhysics2}}{[MP] Xây mã VMC từng bước cho H, He, Be.}
+\tl{B47}{T. Saue, ``Second quantization'' (bài giảng ESQC). \url{https://www.esqc.org/lectures/ESQC2026_saue_secQ.pdf}}{[MP] Lượng tử hóa lần hai cho hóa lượng tử.}
+\tl{B48}{E. Fromager, ``Second quantization'' (ISTPC 2017). \url{https://lcqs.unistra.fr/wordpress/wp-content/uploads/2025/11/lecture_istpc2017_second_quantization.pdf}}{[MP] Có bài tập nhỏ.}
+\tl{B50}{PennyLane demos: \emph{Building molecular Hamiltonians}, \emph{A brief overview of VQE}. \url{https://pennylane.ai/qml/demos/tutorial_vqe}}{[MP] Từ phân tử tới Hamiltonian qubit rồi VQE, chạy trong vài phút.}
+\tl{B52}{\emph{Scientific Python Lectures}. \url{https://lectures.scientific-python.org/}}{[MP] Python, NumPy, SciPy, Matplotlib.}
+\tl{B53}{\emph{NumPy: the absolute basics for beginners}. \url{https://numpy.org/doc/stable/user/absolute_beginners.html}}{[MP] Hướng dẫn chính thức của NumPy.}
+\end{dstl}
+
+\section*{Phần mềm để thực hành}
+\begin{dstl}
+\tl{B56}{Crawford Group, \emph{Programming Projects}. \url{https://github.com/CrawfordGroup/ProgrammingProjects}}{[MP] Tự viết HF, MP2, CCSD, (T), DIIS. Cách tốt nhất để thật sự hiểu các phương pháp.}
+\tl{B57}{Psi4NumPy. \url{https://github.com/psi4/psi4numpy}}{[MP] Notebook kết hợp lý thuyết và mã cho HF, DFT, MP2, CC, CI.}
+\tl{B60}{PySCF. \url{https://github.com/pyscf/pyscf} --- tài liệu: \url{https://pyscf.org/}}{[MP] Chương trình dùng trong tài liệu này; viết bằng Python nên mã nguồn dễ đọc.}
+\tl{B61}{PyQMC. \url{https://github.com/WagnerGroup/pyqmc}}{[MP] VMC và DMC bằng Python, tích hợp với PySCF.}
+\tl{B62}{QMCPACK. \url{https://qmcpack.org/}}{[MP] Mã QMC hiệu năng cao.}
+\tl{B64}{FermiNet (DeepMind, JAX). \url{https://github.com/google-deepmind/ferminet}}{[MP] Mã chính thức của FermiNet và Psiformer; README có lệnh mẫu cho nguyên tử Li; nên chạy trên GPU.}
+\tl{B65}{DeepQMC. \url{https://github.com/deepqmc/deepqmc}}{[MP] Hàm sóng mạng nơ-ron (PauliNet, FermiNet, Psiformer\ldots) bằng JAX.}
+\tl{B66}{block2. \url{https://github.com/block-hczhai/block2-preview}}{[MP] DMRG cho hóa lượng tử.}
+\tl{B68}{tensornetwork.org. \url{https://tensornetwork.org/}}{[MP] Giải thích MPS, DMRG bằng hình vẽ.}
+\end{dstl}
+
+\section*{Bài tổng quan nên đọc}
+\begin{dstl}
+\tl{B69}{W. Kohn, ``Nobel Lecture: Electronic structure of matter'', \emph{Rev. Mod. Phys.} 71, 1253 (1999). \url{https://doi.org/10.1103/RevModPhys.71.1253}}{Trung cấp. Nguồn gốc khái niệm ``bức tường hàm mũ''; cầu nối từ hàm sóng sang DFT.}
+\tl{B72}{K. Burke, ``Perspective on density functional theory'', \emph{J. Chem. Phys.} 136, 150901 (2012). \url{https://doi.org/10.1063/1.4704546}}{Trung cấp. Thành tựu và hạn chế của DFT.}
+\tl{B73}{A. D. Becke, ``Fifty years of density-functional theory in chemical physics'', \emph{J. Chem. Phys.} 140, 18A301 (2014). \url{https://doi.org/10.1063/1.4869598}}{Trung cấp. Lịch sử DFT kể bởi tác giả của B88 và B3LYP.}
+\tl{B75}{R. J. Bartlett, M. Musiał, ``Coupled-cluster theory in quantum chemistry'', \emph{Rev. Mod. Phys.} 79, 291 (2007). \url{https://doi.org/10.1103/RevModPhys.79.291}}{Nâng cao. Tổng quan CC chuẩn mực.}
+\tl{B76}{T. D. Crawford, H. F. Schaefer III, ``An Introduction to Coupled Cluster Theory for Computational Chemists'', \emph{Rev. Comput. Chem.} 14, 33 (2000). \url{https://doi.org/10.1002/9780470125915.ch2}}{Trung cấp--nâng cao. Nhập môn CC sư phạm nhất.}
+\tl{B77}{W. M. C. Foulkes và cộng sự, ``Quantum Monte Carlo simulations of solids'', \emph{Rev. Mod. Phys.} 73, 33 (2001). \url{https://doi.org/10.1103/RevModPhys.73.33}}{Nâng cao. Tổng quan VMC/DMC kinh điển.}
+\tl{B82}{J. Hermann và cộng sự, ``Ab initio quantum chemistry with neural-network wavefunctions'', \emph{Nat. Rev. Chem.} 7, 692 (2023). \url{https://arxiv.org/abs/2208.12590}}{Trung cấp--nâng cao. Bài nên đọc đầu tiên về hàm sóng mạng nơ-ron.}
+\tl{B84}{S. McArdle và cộng sự, ``Quantum computational chemistry'', \emph{Rev. Mod. Phys.} 92, 015003 (2020). \url{https://arxiv.org/abs/1808.10402}}{Trung cấp--nâng cao. Nhập môn đồng thời hóa tính toán và tính toán lượng tử.}
+\tl{B89}{S. Lee và cộng sự, ``Evaluating the evidence for exponential quantum advantage in ground-state quantum chemistry'', \emph{Nat. Commun.} 14, 1952 (2023). \url{https://doi.org/10.1038/s41467-023-37587-6}}{Nâng cao. Đánh giá tỉnh táo về lợi thế của máy tính lượng tử.}
+\tl{B92}{U. Schollwöck, ``The density-matrix renormalization group in the age of matrix product states'', \emph{Ann. Phys.} 326, 96 (2011). \url{https://arxiv.org/abs/1008.3477}}{Nâng cao. DMRG bằng ngôn ngữ MPS.}
+\end{dstl}
+
+\section*{Dữ liệu chuẩn cho Li}
+\begin{dstl}
+\tl{B105}{NIST Atomic Spectra Database, Ionization Energies. \url{https://physics.nist.gov/PhysRefData/ASD/ionEnergy.html}}{[MP] Năng lượng ion hóa thực nghiệm của Li, Li$^+$, Li$^{2+}$.}
+\tl{B106}{NIST CCCBDB. \url{https://cccbdb.nist.gov/}}{[MP] Kết quả HF, MP2, CC, DFT cho Li với nhiều tập cơ sở, để so sánh với kết quả bạn tự tính. Lưu ý: subagent nghiên cứu phát hiện các giá trị CCSD(T) của Li trong CCCBDB có vẻ lệch khoảng $-0.17\mHa$; nên dùng giá trị tự tính.}
+\end{dstl}
+
+\section*{Tài liệu tiếng Việt}
+Nhận xét trung thực: có một số giáo trình tiếng Việt tốt về cơ học lượng tử và hóa lượng tử (chủ yếu của ĐHQG Hà Nội), nhưng \textbf{rất ít tài liệu tiếng Việt đi sâu vào tính toán nhiều electron hiện đại} (lập trình HF/CC, QMC, mạng nơ-ron, DMRG). Không tìm thấy kênh YouTube tiếng Việt nào dạy bài bản hóa lượng tử tính toán ở mức đại học. Wikipedia tiếng Việt chưa có bài ``Định thức Slater''. Nên dùng tài liệu tiếng Việt để nắm khái niệm và thuật ngữ, còn phương pháp hiện đại thì học bằng tài liệu tiếng Anh kèm bảng thuật ngữ.
+\begin{dstl}
+\tl{B107}{Nguyễn Hoàng Hải, \emph{Cơ học lượng tử: Từ nguyên lí đến nguyên tử}, NXB ĐHQG Hà Nội (2022).}{[TP] Rất sát lộ trình: chương 9 trình bày phương pháp Roothaan--Hartree--Fock và tính năng lượng He, có hướng dẫn Matlab.}
+\tl{B108}{Phạm Văn Nhiêu, \emph{Hóa lượng tử (Hóa lí I)}, NXB ĐHQG Hà Nội (2018).}{[TP] Giáo trình cho sinh viên năm ba và cao học.}
+\tl{B110}{Lâm Ngọc Thiềm, \emph{Phương pháp tính lượng tử trong Hóa học}, NXB ĐHQG Hà Nội (2018).}{[TP] Tài liệu tiếng Việt hiếm hoi tập trung vào phương pháp tính.}
+\tl{B118}{Nguyễn Thị Minh Huệ, Lâm Ngọc Thiềm, ``Phương pháp tính hóa học lượng tử và một số ứng dụng của nó trong hóa học hiện đại'', \emph{Vietnam J. Chem.} 56, 34 (2018). \url{https://doi.org/10.15625/vjc.2018-0003}}{Bài tổng quan tiếng Việt.}
+\tl{B120}{Vũ Hữu Tiệp, \emph{Machine Learning cơ bản}. \url{https://machinelearningcoban.com/}}{[MP] Học máy bằng tiếng Việt, hữu ích cho nhánh mạng nơ-ron.}
+\tl{B121}{\emph{Đắm mình vào Học Sâu}, bản dịch tiếng Việt của \emph{Dive into Deep Learning}. \url{https://github.com/d2l-ai/d2l-vi}}{[MP] \textbf{Cảnh báo:} tên miền cũ ghi trong README của dự án hiện đã bị chiếm và chuyển thành trang cờ bạc. Chỉ dùng kho GitHub.}
+\tl{B123}{VIASM, khóa ``Tính toán lượng tử: Lý thuyết và thực hành'' (2020, tiếng Việt). \url{http://viasm.edu.vn/hdkh/khoa-hoc-tinh-toan-luong-tu-ly-thuyet-va-thuc-hanh}}{Ví dụ về các khóa ngắn trong nước; nên theo dõi VIASM và ĐH KHTN Hà Nội để biết các trường hè.}
+\end{dstl}
